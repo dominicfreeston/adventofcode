@@ -7,6 +7,8 @@
         new-freq
         (recur new-freq (conj found new-freq) (rest nums))))))
 
-(def nums (map read-string *command-line-args*))
-(println (reduce + nums))
-(println (find-repeat-freq nums))
+(if (nil? *command-line-args*)
+  (println "Specify the input")
+  (let [nums (map read-string *command-line-args*)]
+    (println (reduce + nums))
+    (println (find-repeat-freq nums))))
