@@ -1,19 +1,18 @@
 (ns advent.2018.5
   (:require [clojure.string :as str]))
 
+(defn conjn [coll x]
+  (if (nil? x) coll (conj coll x)))
+
 (defn pop-all [l]
   (loop [safe '() left l]
     (let [f (first left)
           s (second left)]
       (cond (empty? left) safe
             (nil? s) (conj safe f)
-            :else (let [is-safe (or (= f s) (not (= (str/upper-case f) (str/upper-case s))))
-                        n-safe (if is-safe (conj safe f) (rest safe))
-                        n-left (if is-safe
-                                 (rest left)
-                                 (let [r-left (nthrest left 2)]
-                                   (if (empty? safe) r-left (conj r-left (first safe)))))]
-                    (recur n-safe n-left))))))
+            :else (if (or (= f s) (not (= (str/upper-case f) (str/upper-case s))))
+                    (recur (conj safe f) (rest left))
+                    (recur (rest safe) (conjn (nthrest left 2) (first safe))))))))
 
 (def letters (map char (range (int \a) (inc (int \z)))))
 
