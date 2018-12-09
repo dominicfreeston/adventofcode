@@ -15,7 +15,7 @@
   (first (find-avail info)))
 
 (defn remove-node [info n]
-  (reduce (fn [m [k v]] (assoc m k (disj v n #{}))) {} (dissoc info n)))
+  (reduce-kv (fn [m k v] (assoc m k (disj v n #{}))) {} (dissoc info n)))
 
 ;; Part 1
 
@@ -47,7 +47,7 @@
 (defn pass-time [acc]
   (let [min-val (apply min (map #(% 1) (acc :curr)))
         ntotal (+ min-val (acc :total))
-        ncurr (reduce (fn [m [k v]] (assoc m k (- v min-val))) {} (acc :curr))]
+        ncurr (reduce-kv (fn [m k v] (assoc m k (- v min-val))) {} (acc :curr))]
     (assoc acc :total ntotal :curr ncurr)))
 
 (defn shift-next [acc]
